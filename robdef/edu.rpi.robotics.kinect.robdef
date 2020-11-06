@@ -1,0 +1,69 @@
+service edu.rpi.robotics.kinect
+
+
+
+stdver 0.10
+
+import com.robotraconteur.geometry
+import com.robotraconteur.geometryf
+import com.robotraconteur.sensor
+import com.robotraconteur.device
+
+using com.robotraconteur.geometry.Pose
+using com.robotraconteur.geometryf.Point as Pointf
+using com.robotraconteur.sensor.Sensor as Sensor
+using com.robotraconteur.sensor.SensorInfo as SensorInfo
+using com.robotraconteur.sensor.SensorData as SensorData
+#using com.robotraconteur.sensor.SensorDataHeader as SensorDataHeader
+
+using com.robotraconteur.device.DeviceInfo
+
+
+struct KinectBody
+	
+
+    
+	field uint64 tracking_id
+	field bool tracked
+	
+	field Pose[] joint_poses
+
+	
+	field uint8[] joint_tracking_state
+
+	
+end 
+
+struct KinectBodies
+	field KinectBody{list} bodies
+end
+
+struct KinectBodiesSensorData
+	#field SensorDataHeader sensor_data
+	field KinectBodies bodies
+end
+
+
+object Kinect
+    implements Sensor
+    property DeviceInfo device_info [readonly, nolock]
+	property bool active
+    property SensorInfo sensor_info [readonly,nolock]
+	wire double[] sensor_value [readonly,nolock]
+	pipe SensorData sensor_data [readonly,nolock]	
+    	function varvalue getf_param(string param_name)
+    	function void setf_param(string param_name, varvalue value)
+    	#property bool active_body_tracking
+
+
+	function uint64[6] getTrackedBodyIDs()
+	function KinectBody getDetectedBody(int32 index)
+	pipe KinectBodiesSensorData kinect_body_sensor_data [readonly]
+	wire KinectBodies kinect_body_sensor_value [readonly]
+	#function double[3] getGroundPlaneOrientation
+	
+	#function uint8 EnablePointCloudGeneration(uint8 with_color)
+	#function uint8 DisablePointCloudGeneration()
+	#function PointCloud getCurrentPointCloud()
+	
+end 

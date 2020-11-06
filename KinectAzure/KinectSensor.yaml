@@ -1,0 +1,281 @@
+
+device_info:
+  
+  multicamera: 
+    name: kinect_azure_multicamera
+    uuid: 82d22757-bbfc-44ca-9edb-8824c4a1945d
+    user_description: Kinect Multicamera Interface
+    manufacturer:
+      name: Microsoft
+      uuid: 82d22757-bbfc-44ca-9edb-8824c4a1943e
+      
+    model:
+      name: Kinect_Azure
+      uuid: f965af3f-da91-41d7-be0f-871207c2185d
+    
+    serial_number: 123456789
+      
+    update_frequency: 30
+
+    pose:
+      frame:
+        name: kinect_azure_multicamera
+        uuid: 82d22757-bbfc-44ca-9edb-8824c4a1945d
+      orientation:
+        w: 0.0
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      position:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    
+    device_classes:
+      - class_identifier:
+        name: multicamera
+        uuid: 39b513e7-21b9-4b49-8654-7537473030ee
+        subclasses:
+          - camera
+          - infrared
+          - depth_sensor
+          - body_overlay
+    implemented_types:
+      - com.robotraconteur.imaging.MultiCamera
+        
+    cameras:    
+      - camera: 
+        name: kinect_azure_color_camera
+        user_description: Kinect Color Camera Interface
+        parent_device:
+          name: kinect_azure_multicamera
+          uuid: 82d22757-bbfc-44ca-9edb-8824c4a1945d
+        device_classes:
+          - class_identifier:
+            name: camera
+            uuid: 39b513e7-21b9-4b49-8654-7537473030ee
+            
+              
+        implemented_types:
+          - com.robotraconteur.imaging.Camera
+             
+        camera_calibration:
+          image_size:
+            width: 4096
+            height: 3072
+          
+          K:
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+
+      
+    
+      - camera: 
+        name: kinect_azure_infrared_camera
+        user_description: Kinect Infrared Camera Interface
+        parent_device:
+          name: kinect_azure_multicamera
+          uuid: 82d22757-bbfc-44ca-9edb-8824c4a1945d
+        device_classes:
+          - class_identifier:
+            name: infrared
+            uuid: 39b513e7-21b9-4b49-8654-7537473030ee
+            
+              
+        implemented_types:
+          - com.robotraconteur.imaging.Camera
+             
+        camera_calibration:
+          image_size:
+            width: 640
+            height: 576
+          K:
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+
+
+    
+      - camera:
+        name: kinect_azure_depth_camera
+        user_description: Kinect Depth Camera Interface
+        parent_device:
+          name: kinect_azure_multicamera
+          uuid: 82d22757-bbfc-44ca-9edb-8824c4a1945d
+        device_classes:
+          - class_identifier:
+            name: depth_sensor
+            uuid: 39b513e7-21b9-4b49-8654-7537473030ee
+            
+              
+        implemented_types:
+          - com.robotraconteur.imaging.Camera
+             
+      
+        camera_calibration:
+          image_size:
+            width: 640
+            height: 576
+          K:
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+      
+    
+      - camera:
+        name: kinect_azure_body_overlay
+        user_description: Kinect Body Overlay Camera Interface
+        parent_device:
+          name: kinect_azure_multicamera
+          uuid: 82d22757-bbfc-44ca-9edb-8824c4a1945d
+        device_classes:
+          - class_identifier:
+            name: body_overlay
+            uuid: 39b513e7-21b9-4b49-8654-7537473030ee
+            
+              
+        implemented_types:
+          - com.robotraconteur.imaging.Camera
+             
+        camera_calibration:
+          image_size:
+            width: 640
+            height: 576
+          K:
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+            -0.0
+
+
+  point_cloud:
+    name: kinect_azure_pointcloud
+    user_description: Kinect Point Cloud Generator
+    parent_device: 
+      name: kinect_azure_multicamera
+      uuid: 82d22757-bbfc-44ca-9edb-8824c4a1945d
+    manufacturer:
+      name: Microsoft
+      uuid: 82d22757-bbfc-44ca-9edb-8824c4a1943e
+    model:
+      name: Kinect_Azure
+      uuid: f965af3f-da91-41d7-be0f-871207c2185d
+    
+    serial_number: 123456789
+      
+    update_frequency: 30
+
+    pose:
+      orientation:
+        w: 0.0
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      position:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    device_classes:
+      - class_identifier:
+        name: pointcloud
+        uuid: 39b513e7-21b9-4b49-8654-7537473030ea
+        subclasses:
+          -point_cloud_sensor
+    implemented_types:
+      - com.robotraconteur.pointcloud.sensor.PointCloudSensor
+    sensor_type: point_cloud
+    range_min:
+      -0.0
+      -0.0
+      -0.5
+    range_max:
+      -0.0
+      -0.0
+      -3.86
+    
+    resolution:
+      -0.0
+      -0.0
+      -0.0
+    
+    
+  
+  body_tracker:
+    name: kinect_azure_body_tracker
+    user_description: Kinect Body Joint Tracker
+    manufacturer:
+      name: Microsoft
+      uuid: 82d22757-bbfc-44ca-9edb-8824c4a1943e
+    model:
+      name: Kinect_Azure
+      uuid: f965af3f-da91-41d7-be0f-871207c2185d
+    
+    serial_number: 123456789
+      
+    update_frequency: 30
+    
+    pose:
+      orientation:
+        w: 0.0
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      position:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    device_classes:
+      
+      - class_identifier:
+        name: body_tracker
+        uuid: 39b513e7-21b9-4b49-8654-7537473030ba
+        subclasses:
+          - body_tracker
+    implemented_types:
+      - edu.rpi.robotics.kinect.Kinect
+    sensor_type: unknown
+    sensor_resolution:
+      -0.0
+      -0.0
+      -0.0
+      
+    sensor_units:
+      - meter
+    data_type: 
+      data_type_name: body_index_array
+      data_type_code: namedarray_array_c
+      array_type_code: array_c
+      container_type_code: none_c
+      array_var_len: false
+      array_len: 
+        - 32
+    
+    
+    analog_sensor: false
+    
+
+
