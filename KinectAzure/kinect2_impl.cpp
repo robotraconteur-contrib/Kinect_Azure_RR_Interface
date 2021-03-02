@@ -126,24 +126,24 @@ KinectMultiCamera::KinectMultiCamera(Kinect2_impl* reference) {
 	
 	
 
-	cameras[0]->image_height = 2160;
-	cameras[0]->image_width = 3840;
+	cameras[0]->image_height = reference->color_image_height;
+	cameras[0]->image_width = reference->color_image_width;
 	cameras[0]->image_step = 4;
 	cameras[0]->image_encoding = K4A_IMAGE_FORMAT_COLOR_MJPG;
 	//TODO: Make sure that Body index map size matches depth image size
-	cameras[1]->image_height = 576;
-	cameras[1]->image_width = 640;
+	cameras[1]->image_height = reference->depth_image_height;
+	cameras[1]->image_width = reference->depth_image_width;
 	cameras[1]->image_step = 2;
 	cameras[1]->image_encoding = 0x2001;
 
-	cameras[2]->image_height = 576;
-	cameras[2]->image_width = 640;
+	cameras[2]->image_height = reference->depth_image_height;
+	cameras[2]->image_width = reference->depth_image_width;
 	cameras[2]->image_step = 2;
 	cameras[2]->image_encoding = 0x4000;
 
 
-	cameras[3]->image_height = 576;
-	cameras[3]->image_width = 640;
+	cameras[3]->image_height = reference->depth_image_height;
+	cameras[3]->image_width = reference->depth_image_width;
 	cameras[3]->image_step = 1;
 	cameras[3]->image_encoding = 0x2000;
 
@@ -442,7 +442,7 @@ void KinectIMU::send_data(k4a_imu_sample_t sample){
 
 
 
-Kinect2_impl::Kinect2_impl()
+Kinect2_impl::Kinect2_impl(int depth_image_height, int depth_image_width, int color_image_height, int color_image_width)
 {
 	
 	YAML::Node config = YAML::LoadFile("KinectSensor.yaml");
@@ -495,19 +495,19 @@ Kinect2_impl::Kinect2_impl()
 	this->thread_exit = false;
 	TIMEOUT_IN_MS = 100;
 	//this->enabledSources = FrameSourceTypes_None;
-	this->color_image_width = 3840;
-	this->color_image_height = 2160;
+	this->color_image_width = color_image_width;
+	this->color_image_height = color_image_height;
 	//std::cout << "Success" << std::endl;
-	this->depth_image_width = 640;
-	this->depth_image_height = 576;
+	this->depth_image_width = depth_image_width;
+	this->depth_image_height = depth_image_height;
 	
 	// Allocate memory for the different image streams (consider moving this to the enable_streams section?)
 	
-	this->bodyindex_image_data = new uint8_t[this->depth_image_width * this->depth_image_height];
-	this->depth_image_data = new uint16_t[this->depth_image_width * this->depth_image_height];
-	this->infrared_image_data = new uint16_t[this->depth_image_width * this->depth_image_height];
+	this->bodyindex_image_data = new uint8_t[depth_image_width * depth_image_height];
+	this->depth_image_data = new uint16_t[depth_image_width * depth_image_height];
+	this->infrared_image_data = new uint16_t[depth_image_width * depth_image_height];
 	//this->longexposure_infrared_image_data = new uint16_t[this->depth_image_width * this->depth_image_height];
-	this->color_image_data = new uint8_t[this->color_image_width * this->color_image_height];
+	this->color_image_data = new uint8_t[color_image_width * color_image_height];
 	//this->pointcloud_temp = new uint16_t[this->depth_image_width*this->depth_image_height * 6];
 	this->infrared_image_size, this->color_image_size, this->body_index_size, this->depth_image_size = 0;
 	//KinectPointCloud pointcloud (new KinectPointCloud(this));
@@ -572,7 +572,41 @@ HRESULT Kinect2_impl::StartupKinect()
 		}
 
 		config.color_format = K4A_IMAGE_FORMAT_COLOR_MJPG;
-		config.color_resolution = K4A_COLOR_RESOLUTION_2160P;
+		switch (this->color_image_height) {
+		case 720:
+			config.color_resolution= K4A_COLOR_RESOLUTION_720P;
+			break;
+		case 1080:
+			config.color_resolution = K4A_COLOR_RESOLUTION_1080P;
+			break;
+		case 1440:
+			config.color_resolution = K4A_COLOR_RESOLUTION_1440P;
+			break;
+		case 1536:
+			config.color_resolution = K4A_COLOR_RESOLUTION_1536P;
+			break;
+		case 2160:
+			config.color_resolution = K4A_COLOR_RESOLUTION_2160P;
+			break;
+		case 3072:
+			config.color_resolution = K4A_COLOR_RESOLUTION_3072P;
+			break;
+		}
+		switch (this->depth_image_height) {
+		case 288:
+			config.depth_mode = K4A_DEPTH_MODE_NFOV_2X2BINNED;
+			break;
+		case 576:
+			config.depth_mode = K4A_DEPTH_MODE_NFOV_UNBINNED;
+			break;
+		case 512:
+			config.depth_mode = K4A_DEPTH_MODE_WFOV_2X2BINNED;
+			break;
+		case 1024:
+			config.depth_mode = K4A_DEPTH_MODE_WFOV_UNBINNED;
+			break;
+		}
+		//config.color_resolution = K4A_COLOR_RESOLUTION_2160P;
 		//this->enabledSources++;
 		
 		
@@ -580,7 +614,7 @@ HRESULT Kinect2_impl::StartupKinect()
 		k4a_image_create(K4A_IMAGE_FORMAT_CUSTOM, this->depth_image_width, this->depth_image_height, this->depth_image_width*(int)sizeof(PointCloudPixel_int16x3_t), &pointcloudimagetemp);
 		this->pointcloudimagetemp = pointcloudimagetemp;
 
-		config.depth_mode = K4A_DEPTH_MODE_NFOV_UNBINNED;
+		//config.depth_mode = K4A_DEPTH_MODE_NFOV_UNBINNED;
 		transform = k4a_transformation_create(&sensor_calibration);
 			
 		k4abt_tracker_t kinect_body_tracker = NULL;

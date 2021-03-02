@@ -193,8 +193,8 @@ public:
 	RR_SHARED_PTR < KinectBodyTracker> tracker;
 	RR_SHARED_PTR <KinectIMU> imu;
 	int color_image_size, body_index_size, depth_image_size, infrared_image_size;
-	int color_image_width, color_image_height;
-	int depth_image_width, depth_image_height;
+	
+	int depth_image_width, depth_image_height,color_image_width, color_image_height;
 	uint8_t *color_image_data;
 	uint8_t *bodyindex_image_data;
 	uint16_t *depth_image_data;
@@ -204,11 +204,13 @@ public:
 	boost::mutex mtx_;
 	uint64_t tracked_body_ids[6];
 	device::DeviceInfo device_info;
-
-	int enabledSources;
-	Kinect2_impl();
-	~Kinect2_impl();
 	k4a_device_t kinect;
+	int enabledSources;
+	//RR_SHARED_PTR<k4a_device_t>& kinect;
+	Kinect2_impl(int depth_image_height,int depth_image_width, int color_image_height, int color_image_width);
+	~Kinect2_impl();
+	
+	
 	HRESULT StartupKinect();
 	HRESULT ShutdownKinect();
 	//virtual sensors::kinect2::ImagePtr getCurrentColorImage();
@@ -280,6 +282,7 @@ public:
 	Kinect_impl_playback(char* filename);
 	~Kinect_impl_playback();
 	k4a_device_t kinect;
+	//RR_SHARED_PTR<k4a_device_t>& kinect;
 	HRESULT StartupKinect();
 	
 
