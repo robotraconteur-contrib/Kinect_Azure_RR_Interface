@@ -8,9 +8,13 @@ In addition this package is built using Vcpkg to download other packages includi
 
 To build use cmake, recommended usage is with cmake gui
 create build folder in files directory and specify directories for cmake build
+
 Press configure, select Visual Studio 16 2019 for project generator
+
 Specify platform for generator to x64
+
 And select specify toolchain file for cross-compiling
+
 To specify the toolchain file navigate to your vcpkg install folder and select /scripts/buildsystems/vcpkg.cmake and press Finish
 
 If there are any errors identify which libraries are missing, if robotraconteur_companion is missing then select the entry in the cmake entry list and select it
