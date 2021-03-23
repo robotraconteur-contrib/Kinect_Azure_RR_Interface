@@ -22,4 +22,5 @@ specify the build folder in the location of your robotraconteur_companion instal
 
 Configure again if necessary and then press Generate
 There should now be a KinectV2.sln file in your specified build folder, open it in Visual studio, you should then be able to build and run the code from there. 
+
 If necessary remove the ALL_BUILD directory from the Solution Explorer menu and rebuild.
